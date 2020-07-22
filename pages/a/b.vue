@@ -1,8 +1,21 @@
 <template>
-  <div class="fullscreen b page">
-    <n-link class="button" to="/a">Go to a</n-link>
+
+  <div>
+    <keep-alive>
+      <div class="fullscreen b page">
+        <n-link class="button" to="/a">Go to a</n-link>
+        <n-link class="button" to="/a/b/c">Go to c</n-link>
+      </div>
+    </keep-alive>
+    <nuxt-child class="overlapping-child" />
   </div>
 </template>
+<script>
+export default {
+  transition: {
+  }
+}
+</script>
 <style>
   .page {
     display: flex;

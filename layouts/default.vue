@@ -1,7 +1,5 @@
 <template>
-  <div class="fullscreen">
-    <nuxt class="fullscreen"/>
-  </div>
+  <nuxt class="fullscreen"/>
 </template>
 <style>
 .fullscreen {

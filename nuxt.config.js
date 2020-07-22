@@ -37,6 +37,9 @@ module.exports = {
   },
   server: {
     port: 7000,
-  }
+  },
+  css: [
+    'assets/main.css'
+  ]
 }
 
