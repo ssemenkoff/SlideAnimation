@@ -3,8 +3,13 @@
 </template>
 <style>
 .fullscreen {
-  width: 100vw;
-  height: 100vh; 
+  height: 100%;
+  width: 100%;
+}
+
+html, body, body > div, body > div > div{
+  height: 100%;
+  width: 100%;
 }
 
 html {

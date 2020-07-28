@@ -36,10 +36,14 @@ module.exports = {
     }
   },
   server: {
+    host: '0.0.0.0',
     port: 7000,
   },
   css: [
     'assets/main.css'
-  ]
+  ],
+  plugins: [
+    { src: '~plugins/vue-touch', mode: 'client' },
+  ],
 }
 

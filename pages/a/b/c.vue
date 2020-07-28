@@ -3,7 +3,6 @@
     <div class="fullscreen c page">
       <n-link class="button" to="/a/b">Go to b</n-link>
       <n-link class="button" to="/a">Go to a</n-link>
-      <n-link class="button" to="/a/b/d">Go to d</n-link>
     </div>
   </div>
 </template>
