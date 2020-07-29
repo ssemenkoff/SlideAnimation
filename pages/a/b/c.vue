@@ -1,14 +1,31 @@
 <template>
-  <div>
-    <div class="fullscreen c page">
-      <n-link class="button" to="/a/b">Go to b</n-link>
-      <n-link class="button" to="/a">Go to a</n-link>
-    </div>
+<div 
+    v-touch:moved="movedHandler"
+    v-touch:moving="movingHandler"
+    v-touch:end="endHandler"
+    :style="pageStyles"
+    :class="computedClasses"
+  >
+    <keep-alive>
+      <div class="fullscreen c page">
+        <n-link class="button" to="/a/b">Go to b</n-link>
+        <n-link class="button" to="/a">Go to a</n-link>
+      </div>
+    </keep-alive>
   </div>
 </template>
 <script>
+import navigationMixin from '~/components/navigationAnimationMixin';
+
 export default {
-}
+  mixins: [
+    navigationMixin({
+      routeName: 'a-b-c',
+      leftPage: '/a/b',
+      rightPage: null
+    }),
+  ],
+};
 </script>
 <style>
   .c {

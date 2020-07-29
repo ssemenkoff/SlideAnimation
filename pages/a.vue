@@ -3,6 +3,8 @@
     v-touch:moved="movedHandler"
     v-touch:moving="movingHandler"
     v-touch:end="endHandler"
+    :style="pageStyles"
+    :class="computedClasses"
   >
     <keep-alive>
       <div class="fullscreen a page">
@@ -12,7 +14,7 @@
     </keep-alive>
     <div
       class="fullscreen"
-      :class="!!touchStartTimestamp ? 'no-animation' : ''"
+      :class="!touchStartTimestamp ? 'with-animation' : ''"
     >
       <nuxt-child
         class="overlapping-child"
@@ -23,105 +25,15 @@
   </div>
 </template>
 <script>
-const THRESHOLD = 0.6;
-const SWIPE_DURATION_TOLERANCE = 250;
+import navigationMixin from '~/components/navigationAnimationMixin';
 
 export default {
-  data() {
-    return {
-      offset: 0,
-      touchX: 0,
-      navigated: this.$route.name === 'a'? false : true,
-      touchStartTimestamp: null,
-      showTransition: false,
-    };
-  },
-  methods: {
-    movedHandler(event) {
-      if (this.navigated) return;
-      if (!event || event.type !== 'touchmove') {
-        return;
-      }
-
-      const { clientX } = event.touches[0];
-      this.touchX = clientX;
-      this.touchStartTimestamp = event.timeStamp;
-      this.$router.push('/a/b/');
-    },
-    movingHandler(event) {
-      if (this.navigated) return;
-      if (!event || event.type !== 'touchmove') {
-        return;
-      }
-
-      const { clientX } = event.touches[0];
-      this.offset = this.touchX - clientX;
-    },
-    endHandler(event) {
-      if (this.navigated || !this.touchStartTimestamp) return;
-      const touchDuration = event.timeStamp - this.touchStartTimestamp;
-      const touchOffsetAbs = Math.abs(this.offset);
-
-      if (touchOffsetAbs > 30 && touchDuration < SWIPE_DURATION_TOLERANCE) {
-        this.confirmNavigation();
-        return;
-      }
-
-      if (this.$el.clientWidth * THRESHOLD < touchOffsetAbs) {
-        this.confirmNavigation();
-        return;
-      }
-
-      this.revertNavigation();
-    },
-    revertNavigation() {
-      this.$router.replace('/a');
-      this.navigated = false;
-      this.touchX = 0;
-      this.touchStartTimestamp = null;
-      
-      this.offset = 0;
-      this.showTransition = true;
-      setTimeout(() => {
-        this.showTransition = false;
-      }, 500);
-    },
-    confirmNavigation() {
-      this.navigated = true;
-      this.navigatedBySwipe = true;
-
-      this.touchX = 0;
-      this.touchStartTimestamp = null;
-      this.offset = 0;
-      this.showTransition = true;
-      setTimeout(() => {
-        this.showTransition = false;
-      }, 500);
-    },
-  },
-  computed: {
-    computedStyles() {
-      if (this.navigated) {
-        return null;
-      }
-      return {
-        transform: `translateX(calc(100% - ${this.offset}px))`,
-      }
-    },
-    computedClasses() {
-      return this.showTransition ? 'navigation-animation' : '';
-    },
-  },
-  beforeRouteUpdate (to, from, next) {
-    if (to.name === 'a') {
-      this.navigated = false;
-    } else {
-      if(!this.touchStartTimestamp) {
-        this.navigated = true;
-      }
-    }
-    next();
-  }
+  mixins: [
+    navigationMixin({
+      routeName: 'a',
+      rightPage: '/a/b',
+    }),
+  ],
 };
 </script>
 <style>

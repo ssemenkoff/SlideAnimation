@@ -1,8 +1,4 @@
-.no-animation > .page-enter-active, .no-animation > .page-leave-active  {
-  transition: none;
-}
-
-.page-enter-active, .page-leave-active  {
+.with-animation > .page-enter-active, .with-animation > .page-leave-active  {
   transition: transform .3s;
 }
 
